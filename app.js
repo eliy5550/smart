@@ -75,10 +75,13 @@ const translate_all = async () => {
 
 app.listen(12035, async () => {
     console.log("http://127.0.0.1:12035/") //!!!
+    console.log("server running");
+    DatabaseConnection.connection.ping();
+    setInterval(() => {
+        DatabaseConnection.connection.ping();
 
-    setInterval( ()=>{
         console.log("translating...")
         translate_all();
-    }, 1000*60*30)
+    }, 1000 * 60 * 30)
 
 })
