@@ -8,9 +8,9 @@ class DatabaseConnection {
             //connect to database
             this.connection = mysql.createConnection({
                 host: '127.0.0.1',
-                user: 'root',
-                password: '123456',
-                database: 'smart_city',
+                user: process.env.DB_USER,
+                password: process.env.DB_PASS,
+                database: process.env.DB_DATABASE,
                 multipleStatements: true
             })
 
