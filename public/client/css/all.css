@@ -1,0 +1,32 @@
+*{}
+body{
+    background-color: rgb(243, 248, 255);
+    color: rgb(54, 87, 88);
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    max-width: 600px;
+    margin: 10px auto;
+    border: 2px solid  rgb(54, 87, 88);
+    border-radius: 7px ;
+}
+#main{
+    padding: 20px;
+}
+.sensor{
+    padding: 10px;
+}
+.graphs{
+    width :100%
+}
+
+
+.top{
+    color: rgb(255, 255, 255);
+    background-color : rgb(54, 87, 88);
+    padding: 5px;
+    text-align: center;
+    border-radius:0 ;
+
+}
+
+
+

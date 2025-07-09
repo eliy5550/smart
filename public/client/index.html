@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMART CITY CLIENT</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/all.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script type="module">
+        import * as XLSX from "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js";
+    </script>
+
+    <script src="./classes/JsonFetcher.js"></script>
+    <script src="./classes/Sensor.js"></script>
+    <script src="./classes/Client.js"></script>
+    <script src="./classes/SensorGraph.js"></script>
+
+</head>
+
+<body>
+
+
+    <div class="top">
+
+        <h1>Smart Campus</h1>
+    </div>
+
+    <div id="main">
+        <h2>Sensor Monitoring</h2>
+
+        <p>This project allows us to monitor any type of sensor that sends data to our server.</p>
+        <p>Later we could use this technology to automate systems in the real world. With complitions of this projects
+            we could monitor our campus , our farm or our home.</p>
+
+        <div id="pick_a_sensor">
+            <button onclick="changeSensor('a123')">a123</button>
+            <button onclick="changeSensor('b123')">b123</button>
+            <button onclick="changeSensor('c123')">c123</button>
+            <button onclick="changeSensor('d123')">d123</button>
+        </div>
+
+        <p id="date_block" style="display:none">
+            Pick a day to display <br>
+            <input  type="date" id="search_date">
+        </p>
+
+    </div>
+
+
+    <div id="sensor_content"></div>
+
+
+    <script src="./controller/Controller.js"></script>
+
+    <script src="./controller/Init.js"></script>
+
+
+</body>
+
+</html>
