@@ -33,6 +33,7 @@ class DatabaseConnection {
 
     getTableName(data_type) {
         let name = null
+        data_type = data_type.toUpperCase()
         if (data_type == "TEMPERATURE") { name = "temperature_reports" }
         else if (data_type == "HUMIDITY") { name = "humidity_reports" }
         else if (data_type == "LIGHT_INTENSITY") { name = "light_intensity_reports" }

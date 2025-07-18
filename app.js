@@ -11,6 +11,7 @@ const LoaderRoutes = require('./routes/LoaderRoutes')
 
 const translator = require("./classes/Translator");
 const DataSaver = require('./classes/DataSaver');
+const ManageRoutes = require('./routes/ManageRoutes');
 
 const app = express()
 app.use(cors());
@@ -30,6 +31,9 @@ app.use('/save', SaverRouter)
 
 //data sender
 app.use('/load', LoaderRoutes)
+
+//data Manage
+app.use('/manage', ManageRoutes)
 
 //manage
 app.post('/translate_all', async (req, res) => {

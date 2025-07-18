@@ -7,12 +7,13 @@ const SaverRouter = express.Router()
 
 SaverRouter.use(express.json())
 
-
 // the route /save/sensor gets a data report and saves is. if the rep comes with 
 SaverRouter.post('/sensor', async (req, res) => {
 
     console.log("----------- SAVE SENESOR GOT A REQUEST : " + JSON.stringify(req.body));
-    if (!(req.body.sensor_id === undefined || req.body.data === undefined || req.body.data_type === undefined)) {
+    if (req.body.data_type !== undefined && req.body.data !== undefined && req.body.sensor_id !== undefined) {
+        
+        
         //translated
         console.log("sensor data translated arrived - ", JSON.stringify(req.body));
 
@@ -35,7 +36,7 @@ SaverRouter.post('/sensor', async (req, res) => {
 
         try {
             const data = await databaseConnection.dbQuery(`insert into ${tableName} (sensor_id , report_data , report_date , report_time) values ("${req.body.sensor_id}" , ${req.body.data} ,"${report_date}" ,"${report_time}" );`)
-            return res.json({ result: "ok" })
+            return res.json({ result: "saved tranlated data successfully in " + tableName })
         } catch (error) {
             return res.status(400).json({ result: "not ok !" + error })
         }
@@ -121,5 +122,6 @@ SaverRouter.post('/sensor/translated', async (req, res) => {
         return res.json({ result: "not ok " + error })
     }
 })
+
 
 module.exports = SaverRouter
