@@ -110,7 +110,7 @@ class Translator {
             console.log("data_string: " + data_string)
             const decodedData = decodeAM103Payload(data_string);
 
-            console.log("decodedData: " + decodedData)
+            console.log("decodedData: " + JSON.stringify(decodedData))
 
             
             if(data.temperature) temperature = data.temperature;
