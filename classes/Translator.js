@@ -106,6 +106,8 @@ class Translator {
 
             var temperature = null
             var humidity = null
+            var co2 = null
+
 
             console.log("data_string: " + data_string)
             const decodedData = decodeAM103Payload(data_string);
@@ -115,6 +117,7 @@ class Translator {
             
             if(decodedData.temperature) {temperature = decodedData.temperature;}
             if(decodedData.humidity) humidity = decodedData.humidity;
+            if(decodedData.co2) co2 = decodedData.co2;
 
             // try {
             //     //if first seq is 0367
@@ -147,7 +150,10 @@ class Translator {
             if(humidity != null){
                 results.push({date , time , sensor_id , data_type : "HUMIDITY" , data : humidity , translated : true});
             }
-
+            
+            if(co2 != null){
+                results.push({date , time , sensor_id , data_type : "CO2" , data : humidity , translated : true});
+            }
 
             //console.log("Done!");
 
