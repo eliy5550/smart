@@ -113,8 +113,8 @@ class Translator {
             console.log("decodedData: " + JSON.stringify(decodedData))
 
             
-            if(data.temperature) temperature = data.temperature;
-            if(data.humidity) humidity = data.humidity;
+            if(decodedData.temperature) temperature = data.temperature;
+            if(decodedData.humidity) humidity = data.humidity;
 
             // try {
             //     //if first seq is 0367
