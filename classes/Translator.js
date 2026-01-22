@@ -152,7 +152,7 @@ class Translator {
             }
             
             if(co2 != null){
-                results.push({date , time , sensor_id , data_type : "CO2" , data : humidity , translated : true});
+                results.push({date , time , sensor_id , data_type : "CO2" , data : co2 , translated : true});
             }
 
             //console.log("Done!");
