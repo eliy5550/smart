@@ -94,7 +94,6 @@ class Translator {
             //get data string
             const data_string = parsedReport.data
 
-            console.log("data_string: " + data_string)
 
             if (date === undefined || time === undefined || sensor_id === undefined || data_string === undefined) {
                 throw new Error(
@@ -108,27 +107,33 @@ class Translator {
             var temperature = null
             var humidity = null
 
-            try {
-                //if first seq is 0367
-                //get next 4 letters
-                //turn them to base 10
-                //devide by 10
-                if (base16[0] == '0' && base16[1] == '3' && base16[2] == '6' && base16[3] == '7') {
-                    temperature = this.hexToBase10("" + base16[4] + base16[5] + base16[6] + base16[7]) / 10
-                }
-            } catch (error) { }
+            console.log("data_string: " + data_string)
+            const decodedData = decodeAM103Payload(data_string);
+
+            if(data.temperature) temperature = data.temperature;
+            if(data.humidity) humidity = data.humidity;
+
+            // try {
+            //     //if first seq is 0367
+            //     //get next 4 letters
+            //     //turn them to base 10
+            //     //devide by 10
+            //     if (base16[0] == '0' && base16[1] == '3' && base16[2] == '6' && base16[3] == '7') {
+            //         temperature = this.hexToBase10("" + base16[4] + base16[5] + base16[6] + base16[7]) / 10
+            //     }
+            // } catch (error) { }
 
 
 
-            //if later sequence is 0468
-            //turn next 2 letters to base 10
-            try {
-                if (base16[8] == '0' && base16[9] == '4' && base16[10] == '6' && base16[11] == '8') {
+            // //if later sequence is 0468
+            // //turn next 2 letters to base 10
+            // try {
+            //     if (base16[8] == '0' && base16[9] == '4' && base16[10] == '6' && base16[11] == '8') {
                     
-                    humidity = this.hexToBase10("" + base16[12] + base16[13] ) / 2.55
-                }
-            } catch (error) {
-            }
+            //         humidity = this.hexToBase10("" + base16[12] + base16[13] ) / 2.55
+            //     }
+            // } catch (error) {
+            // }
             
             if(temperature != null){
                 results.push({date , time , sensor_id , data_type : "TEMPERATURE" , data : temperature , translated : true});
