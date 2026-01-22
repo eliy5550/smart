@@ -94,7 +94,7 @@ class Translator {
             //get data string
             const data_string = parsedReport.data
 
-            console.log(data_string)
+            console.log("data_string: " + data_string)
 
             if (date === undefined || time === undefined || sensor_id === undefined || data_string === undefined) {
                 throw new Error(
@@ -107,6 +107,7 @@ class Translator {
 
             var temperature = null
             var humidity = null
+
             try {
                 //if first seq is 0367
                 //get next 4 letters
