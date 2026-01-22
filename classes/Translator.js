@@ -1,56 +1,96 @@
 
-function decodeAM103Payload(base64) {
-  const bytes = Buffer.from(base64, "base64");
-  let i = 0;
-  const data = {};
+// function decodeAM103Payload(base64) {
+//   const bytes = Buffer.from(base64, "base64");
+//   let i = 0;
+//   const data = {};
 
-  while (i < bytes.length) {
-    const channel = bytes[i++];
-    const type = bytes[i++];
+//   while (i < bytes.length) {
+//     const channel = bytes[i++];
+//     const type = bytes[i++];
 
-    // Temperature (°C * 10)
-    if (channel === 0x01 && type === 0x75) {
-      data.temperature = bytes.readInt16LE(i) / 10;
-      i += 2;
+//     // Temperature (°C * 10)
+//     if (channel === 0x01 && type === 0x75) {
+//       data.temperature = bytes.readInt16LE(i) / 10;
+//       i += 2;
+//     }
+
+//     // Humidity (% * 10)
+//     else if (channel === 0x02 && type === 0x76) {
+//       data.humidity = bytes.readUInt16LE(i) / 10;
+//       i += 2;
+//     }
+
+//     // CO2 (ppm)
+//     else if (channel === 0x03 && type === 0x67) {
+//       data.co2 = bytes.readUInt16LE(i);
+//       i += 2;
+//     }
+
+//     // TVOC (ppb)
+//     else if (channel === 0x04 && type === 0x7D) {
+//       data.tvoc = bytes.readUInt16LE(i);
+//       i += 2;
+//     }
+
+//     // PM2.5 (µg/m³)
+//     else if (channel === 0x05 && type === 0x7D) {
+//       data.pm2_5 = bytes.readUInt16LE(i);
+//       i += 2;
+//     }
+
+//     // PM10 (µg/m³)
+//     else if (channel === 0x06 && type === 0x7D) {
+//       data.pm10 = bytes.readUInt16LE(i);
+//       i += 2;
+//     }
+
+//     // Unknown field
+//     else {
+//       break;
+//     }
+//   }
+
+//   return data;
+// }
+
+function decodeMilesightAM103(payload) {
+    // 1. Decode Base64 to a Buffer/Byte Array
+    const bytes = Buffer.from(payload, 'base64');
+    const decoded = {};
+
+    for (let i = 0; i < bytes.length; ) {
+        const channel_id = bytes[i++];
+        const channel_type = bytes[i++];
+
+        // Temperature
+        if (channel_id === 0x03 && channel_type === 0x67) {
+            // LSB (Little Endian)
+            const temp = bytes[i] | (bytes[i + 1] << 8);
+            decoded.temperature = temp / 10;
+            i += 2;
+        } 
+        // Humidity
+        else if (channel_id === 0x04 && channel_type === 0x68) {
+            decoded.humidity = bytes[i] / 2;
+            i += 1;
+        } 
+        // CO2
+        else if (channel_id === 0x05 && channel_type === 0x7d) {
+            const co2 = bytes[i] | (bytes[i + 1] << 8);
+            decoded.co2 = co2;
+            i += 2;
+        } 
+        // Battery
+        else if (channel_id === 0x01 && channel_type === 0x75) {
+            decoded.battery = bytes[i];
+            i += 1;
+        }
+        else {
+            break; // Unknown channel or end of data
+        }
     }
 
-    // Humidity (% * 10)
-    else if (channel === 0x02 && type === 0x76) {
-      data.humidity = bytes.readUInt16LE(i) / 10;
-      i += 2;
-    }
-
-    // CO2 (ppm)
-    else if (channel === 0x03 && type === 0x67) {
-      data.co2 = bytes.readUInt16LE(i);
-      i += 2;
-    }
-
-    // TVOC (ppb)
-    else if (channel === 0x04 && type === 0x7D) {
-      data.tvoc = bytes.readUInt16LE(i);
-      i += 2;
-    }
-
-    // PM2.5 (µg/m³)
-    else if (channel === 0x05 && type === 0x7D) {
-      data.pm2_5 = bytes.readUInt16LE(i);
-      i += 2;
-    }
-
-    // PM10 (µg/m³)
-    else if (channel === 0x06 && type === 0x7D) {
-      data.pm10 = bytes.readUInt16LE(i);
-      i += 2;
-    }
-
-    // Unknown field
-    else {
-      break;
-    }
-  }
-
-  return data;
+    return decoded;
 }
 
 class Translator {
@@ -110,7 +150,7 @@ class Translator {
 
 
             console.log("data_string: " + data_string)
-            const decodedData = decodeAM103Payload(data_string);
+            const decodedData = decodeMilesightAM103(data_string);
 
             console.log("decodedData: " + JSON.stringify(decodedData))
 
