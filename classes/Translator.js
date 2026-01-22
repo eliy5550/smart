@@ -113,8 +113,8 @@ class Translator {
             console.log("decodedData: " + JSON.stringify(decodedData))
 
             
-            if(decodedData.temperature) temperature = data.temperature;
-            if(decodedData.humidity) humidity = data.humidity;
+            if(decodedData.temperature) {temperature = decodedData.temperature;}
+            if(decodedData.humidity) humidity = decodedData.humidity;
 
             // try {
             //     //if first seq is 0367
@@ -138,6 +138,8 @@ class Translator {
             // } catch (error) {
             // }
             
+
+
             if(temperature != null){
                 results.push({date , time , sensor_id , data_type : "TEMPERATURE" , data : temperature , translated : true});
             }
