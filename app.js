@@ -51,7 +51,7 @@ const translate_all = async () => {
     const allReports = await DatabaseConnection.dbQuery("select * from raw_data_reports where translated = 0;");
 
     const successful_results = []
-    //translate each
+    //translate each    
     for (let i = 0; i < allReports.length; i++) {
         const raw_data = allReports[i].raw_data
         const result = translator.toArrayOfResults(raw_data)
@@ -87,6 +87,6 @@ app.listen(12035, async () => {
 
         console.log("translating...")
         translate_all();
-    }, 1000 * 60 * 5)
+    }, 1000 * 5)
 
 })

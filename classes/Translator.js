@@ -1,10 +1,64 @@
 
+function decodeAM103Payload(base64) {
+  const bytes = Buffer.from(base64, "base64");
+  let i = 0;
+  const data = {};
 
+  while (i < bytes.length) {
+    const channel = bytes[i++];
+    const type = bytes[i++];
+
+    // Temperature (°C * 10)
+    if (channel === 0x01 && type === 0x75) {
+      data.temperature = bytes.readInt16LE(i) / 10;
+      i += 2;
+    }
+
+    // Humidity (% * 10)
+    else if (channel === 0x02 && type === 0x76) {
+      data.humidity = bytes.readUInt16LE(i) / 10;
+      i += 2;
+    }
+
+    // CO2 (ppm)
+    else if (channel === 0x03 && type === 0x67) {
+      data.co2 = bytes.readUInt16LE(i);
+      i += 2;
+    }
+
+    // TVOC (ppb)
+    else if (channel === 0x04 && type === 0x7D) {
+      data.tvoc = bytes.readUInt16LE(i);
+      i += 2;
+    }
+
+    // PM2.5 (µg/m³)
+    else if (channel === 0x05 && type === 0x7D) {
+      data.pm2_5 = bytes.readUInt16LE(i);
+      i += 2;
+    }
+
+    // PM10 (µg/m³)
+    else if (channel === 0x06 && type === 0x7D) {
+      data.pm10 = bytes.readUInt16LE(i);
+      i += 2;
+    }
+
+    // Unknown field
+    else {
+      break;
+    }
+  }
+
+  return data;
+}
 
 class Translator {
     
     
+    
     base64ToHex(str) {
+        
         const raw = atob(str);
         let result = '';
         for (let i = 0; i < raw.length; i++) {
@@ -39,6 +93,8 @@ class Translator {
 
             //get data string
             const data_string = parsedReport.data
+
+            console.log(data_string)
 
             if (date === undefined || time === undefined || sensor_id === undefined || data_string === undefined) {
                 throw new Error(
