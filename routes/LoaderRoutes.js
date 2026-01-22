@@ -37,7 +37,7 @@ LoaderRoutes.post('/get_sensor_data', async (req, res) => {// returns latest 10 
     //all or one day
     if(specific_date == null || specific_date === ""){
         //just limit
-        end = ""
+        end = "limit 50"
         order = "order by report_date desc ,report_time desc"        
     }else{
         //search all in specific date
