@@ -1,6 +1,7 @@
 const express = require('express')
 const databaseConnection = require('../db/DatabaseConnection')
 const LoaderRoutes = express.Router()
+const XLSX = require('xlsx')
 
 LoaderRoutes.use(express.json())
 
@@ -72,6 +73,12 @@ LoaderRoutes.post('/get_sensor_data', async (req, res) => {// returns latest 10 
     } catch (error) {
         return res.json({ error: "error : " + JSON.stringify(error) })
     }
+})
+
+
+
+LoaderRoutes.post('/get_sensor_data_xlsx', async (req, res) => {// returns latest 10 reports of a sensor or by day
+   
 })
 
 // LoaderRoutes.post("/all_data", async (req, res) => { //!!!! BAD ROUTE DONT USE IT YET
