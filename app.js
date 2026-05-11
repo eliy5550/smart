@@ -87,6 +87,6 @@ app.listen(12035, async () => {
 
         console.log("translating...")
         translate_all();
-    }, 1000 * 5)
+    }, 1000 * 60)
 
 })

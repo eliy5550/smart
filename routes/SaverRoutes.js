@@ -12,14 +12,14 @@ SaverRouter.post('/sensor', async (req, res) => {
 
     console.log("----------- SAVE SENESOR GOT A REQUEST : " + JSON.stringify(req.body));
     if (req.body.data_type !== undefined && req.body.data !== undefined && req.body.sensor_id !== undefined) {
-        
-        
+
+
         //translated
         console.log("sensor data translated arrived - ", JSON.stringify(req.body));
 
         //check data
         if (req.body.sensor_id === undefined || req.body.data === undefined || req.body.data_type === undefined) return res.json({ error: "missing params" })
-            
+
 
         //check type
         const tableName = databaseConnection.getTableName(req.body.data_type)
@@ -121,6 +121,31 @@ SaverRouter.post('/sensor/translated', async (req, res) => {
     } catch (error) {
         return res.json({ result: "not ok " + error })
     }
+})
+
+
+SaverRouter.post("/ai_daily_report", (req, res) => {
+    if (req.body.sensor_id === undefined) { return res.status(400).json({ message: "no sensor_id" }) }
+    if (req.body.report_data === undefined) { return res.status(400).json({ message: "no report_data" }) }
+    if (req.body.report_date === undefined) { return res.status(400).json({ message: "no report_date" }) }
+
+    databaseConnection.dbQuery(
+        `
+            insert into daily_ai_review(
+            sensor_id,
+            report_data,
+            report_date 
+            ) values (
+            "${req.body.sensor_id}",
+            "${req.body.report_data}",
+            "${req.body.report_date}"
+            );
+        `
+    ).catch(e=>{
+        return res.status(400).json({ message: "failed to save entry to database , " + JSON.stringify(e) })
+    });
+
+    return res.status(200).json({ "message": "ok" });
 })
 
 
