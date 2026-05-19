@@ -162,6 +162,17 @@ LoaderRoutes.post("/test0or1" , (req, res)=>{
     return res.status(200).json({data : x})
 })
 
+let shade_percentage = 0;
+
+setInterval(() => {
+    shade_percentage = Math.floor(Math.random() * 101);
+}, 1000*60);
+
+LoaderRoutes.post("/test0to100" , (req, res)=>{
+    return res.status(200).json({data : shade_percentage})
+})
+
+
 
 
 module.exports = LoaderRoutes
