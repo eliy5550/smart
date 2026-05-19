@@ -156,6 +156,12 @@ LoaderRoutes.post("/sensor_names" , async (req , res)=>{
     return res.json(array_to_return)
 })
 
+LoaderRoutes.post("/test0or1" , (req, res)=>{
+    let x = new Date().getMinutes() % 2;
+
+    return res.status(200).json({data : x})
+})
+
 
 
 module.exports = LoaderRoutes
