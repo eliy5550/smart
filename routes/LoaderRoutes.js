@@ -178,5 +178,10 @@ LoaderRoutes.post("/ai_daily_report" , async (req , res)=>{
     return res.status(200).json(results)
 })
 
+LoaderRoutes.post("/all_machines_data" , async (req , res)=>{
+    const results = await databaseConnection.dbQuery(`select * from machines;`)
+    return res.status(200).json(results)
+})
+
 
 module.exports = LoaderRoutes
