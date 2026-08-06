@@ -172,7 +172,7 @@ LoaderRoutes.post("/test0to100" , (req, res)=>{
     return res.status(200).json({data : shade_percentage})
 })
 
-LoaderRoutes.post("ai_daily_report" , async (req , res)=>{
+LoaderRoutes.post("/ai_daily_report" , async (req , res)=>{
     if (req.date === undefined|| req.date == null ){return res.status(400).json({message : "date not recived"})}
     const results = await databaseConnection.dbQuery(`select * from daily_ai_review where report_date = "${req.data}";`)
     return res.json(results)
