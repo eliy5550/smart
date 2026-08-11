@@ -183,5 +183,10 @@ LoaderRoutes.post("/all_machines_data" , async (req , res)=>{
     return res.status(200).json(results)
 })
 
+LoaderRoutes.post("/get_all_machines_data_by_type" , async (req, res)=>{
+    const results = await databaseConnection.dbQuery(`select * from machines where machine_type="${req.body.machine_type}";`)
+    return res.status(200).json(results)
+})
+
 
 module.exports = LoaderRoutes
