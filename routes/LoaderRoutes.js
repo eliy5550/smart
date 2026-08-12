@@ -188,5 +188,46 @@ LoaderRoutes.post("/get_all_machines_data_by_type" , async (req, res)=>{
     return res.status(200).json(results)
 })
 
+LoaderRoutes.post("/isMachineOn" , async (req, res)=>{
+    const results = await databaseConnection.dbQuery(`select * from machines where machine_id="${req.body.machine_id}";`)
+    try{
+        const isOn  = isIsraelTimeInFrame(results[0].when_on ,  results[0].when_off) 
+        res.status(200).json({result : isOn})
+    }catch{
+        res.status(404).json({result : 0})
+    }
+})
+function isIsraelTimeInFrame(fromStr, toStr) {
+  // 1. Get current time in Israel timezone (Asia/Jerusalem)
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Jerusalem',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: false
+  });
+  
+  // Format returns "HH:MM" (or "24:00" -> normalized by parsing)
+  const israelTimeString = formatter.format(new Date());
+
+  // Helper to convert "HH:MM" or "HH" string into total minutes from midnight
+  const parseToMinutes = (timeStr) => {
+    const [hours, minutes = 0] = timeStr.split(':').map(Number);
+    return hours * 60 + minutes;
+  };
+
+  const currentMinutes = parseToMinutes(israelTimeString);
+  const fromMinutes = parseToMinutes(fromStr);
+  const toMinutes = parseToMinutes(toStr);
+
+  // 2. Check timeframe boundaries
+  if (fromMinutes <= toMinutes) {
+    // Standard range within the same calendar day (e.g., "09:00" to "17:00")
+    return (currentMinutes >= fromMinutes && currentMinutes <= toMinutes) ? 1 : 0;
+  } else {
+    // Range wraps over midnight (e.g., "22:00" to "06:00")
+    return (currentMinutes >= fromMinutes || currentMinutes <= toMinutes) ? 1 : 0;
+  }
+}
+
 
 module.exports = LoaderRoutes
