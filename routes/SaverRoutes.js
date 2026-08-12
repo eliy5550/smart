@@ -129,6 +129,7 @@ SaverRouter.post("/ai_daily_report", (req, res) => {
     if (req.body.report_data === undefined) { return res.status(400).json({ message: "no report_data" }) }
     if (req.body.report_date === undefined) { return res.status(400).json({ message: "no report_date" }) }
 
+
     databaseConnection.dbQuery(
         `
             insert into daily_ai_review(
