@@ -149,5 +149,11 @@ SaverRouter.post("/ai_daily_report", (req, res) => {
     return res.status(200).json({ "message": "ok" });
 })
 
+SaverRouter.post("/update_machine" ,async (req , res) =>{
+    const result = await databaseConnection.dbQuery(`update machines set when_on = "${req.body.when_on}" , when_off = "${req.body.when_off}" where machine_id = "${req.body.machine_id}";`)
+    res.status(200).json({message : "ok"});
+}) 
+
+
 
 module.exports = SaverRouter
